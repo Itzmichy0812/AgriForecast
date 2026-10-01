@@ -1,8 +1,7 @@
-﻿import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AppShell } from '@/components/layout/AppShell'
 import { RouteErrorPage } from '@/components/shared/RouteErrorPage'
 import { NotFoundPage } from '@/components/shared/NotFoundPage'
-import { PlaceholderPage } from '@/components/shared/PlaceholderPage'
 import { DealerDashboardPage } from '@/features/dealer/dashboard/DealerDashboardPage'
 import { ForecastWorkspacePage } from '@/features/dealer/forecast/ForecastWorkspacePage'
 import { ForecastDetailPage } from '@/features/dealer/forecast/ForecastDetailPage'
@@ -49,7 +48,7 @@ export const router = createBrowserRouter([
             path: 'requests/:requestId',
             element: <RequestsWorkspacePage />,
           },
-          // Dealer catch-all: recover to dealer dashboard
+          // Dealer catch-all
           {
             path: '*',
             element: <Navigate to="/dealer/dashboard" replace />,
@@ -57,56 +56,46 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // SCM Workspace (Phase 3+)
+      // SCM Workspace — lazy-loaded to keep initial bundle small
       {
         path: '/scm',
         children: [
           {
             path: 'dashboard',
-            element: (
-              <PlaceholderPage
-                title="Toàn mạng lưới"
-                description="Tổng quan toàn mạng lưới phân phối sẽ được xây dựng ở đây."
-              />
-            ),
+            lazy: async () => {
+              const { ScmDashboardPage } = await import('@/features/scm/dashboard/ScmDashboardPage')
+              return { Component: ScmDashboardPage }
+            },
           },
           {
             path: 'regional-demand',
-            element: (
-              <PlaceholderPage
-                title="Nhu cầu vùng"
-                description="Phân tích và tổng hợp nhu cầu theo vùng địa lý sẽ được xây dựng ở đây."
-              />
-            ),
+            lazy: async () => {
+              const { RegionalDemandPage } = await import('@/features/scm/regional-demand/RegionalDemandPage')
+              return { Component: RegionalDemandPage }
+            },
           },
           {
             path: 'rebalancing',
-            element: (
-              <PlaceholderPage
-                title="Điều chuyển liên vùng"
-                description="Công cụ lập kế hoạch và phê duyệt điều chuyển hàng hóa sẽ được xây dựng ở đây."
-              />
-            ),
+            lazy: async () => {
+              const { RebalancingPage } = await import('@/features/scm/rebalancing/RebalancingPage')
+              return { Component: RebalancingPage }
+            },
           },
           {
             path: 'central-allocation',
-            element: (
-              <PlaceholderPage
-                title="Phân bổ trung tâm"
-                description="Màn hình phân bổ từ kho trung tâm xuống các vùng sẽ được xây dựng ở đây."
-              />
-            ),
+            lazy: async () => {
+              const { CentralAllocationPage } = await import('@/features/scm/central-allocation/CentralAllocationPage')
+              return { Component: CentralAllocationPage }
+            },
           },
           {
             path: 'procurement',
-            element: (
-              <PlaceholderPage
-                title="Mua hàng"
-                description="Quản lý đề xuất và phê duyệt kế hoạch mua hàng sẽ được xây dựng ở đây."
-              />
-            ),
+            lazy: async () => {
+              const { ProcurementPage } = await import('@/features/scm/procurement/ProcurementPage')
+              return { Component: ProcurementPage }
+            },
           },
-          // SCM catch-all: recover to SCM dashboard
+          // SCM catch-all
           {
             path: '*',
             element: <Navigate to="/scm/dashboard" replace />,
@@ -116,7 +105,7 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // Generic 404 for completely unknown roots
+  // Generic 404
   {
     path: '*',
     element: <NotFoundPage />,
