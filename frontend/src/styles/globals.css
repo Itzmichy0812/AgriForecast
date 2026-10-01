@@ -1,0 +1,145 @@
+﻿@import 'tailwindcss';
+
+/* ──────────────────────────────────────────────────────────────
+   Google Fonts: Inter is loaded via index.html <link>
+   ────────────────────────────────────────────────────────────── */
+
+/* ──────────────────────────────────────────────────────────────
+   AgriForecast Design Tokens
+   ────────────────────────────────────────────────────────────── */
+@theme {
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Brand Colors */
+  --color-primary:       #2F6B4F;
+  --color-primary-hover: #24553F;
+  --color-accent:        #3B82F6;
+
+  /* Neutral palette */
+  --color-ink:     #0F172A;
+  --color-text:    #334155;
+  --color-muted:   #64748B;
+  --color-border:  #D9E2EC;
+  --color-surface: #FFFFFF;
+  --color-canvas:  #F4F7F5;
+
+  /* Sidebar */
+  --color-sidebar-bg:         #1E3D2F;
+  --color-sidebar-text:       #D1E8DC;
+  --color-sidebar-text-muted: #8BB8A0;
+  --color-sidebar-active-bg:  #2F6B4F;
+  --color-sidebar-hover-bg:   rgba(255, 255, 255, 0.06);
+  --color-sidebar-border:     rgba(255, 255, 255, 0.08);
+
+  /* ── Semantic status tokens ──────────────────────────────────
+     All status colors must pair with text/icon (never color alone).
+     Warning fg uses amber-800 (#92400E) for WCAG AA contrast on
+     the warning bg (#FFFBEB). The ambient --color-warning token
+     is preserved for decorative dots/icons where contrast is less
+     critical; use --color-status-warning-fg for text.
+     ────────────────────────────────────────────────────────── */
+  /* Neutral */
+  --color-status-neutral-bg:     #F1F5F9;
+  --color-status-neutral-fg:     #475569;
+  --color-status-neutral-border: #CBD5E1;
+
+  /* Info */
+  --color-status-info-bg:     #EFF6FF;
+  --color-status-info-fg:     #1D4ED8;
+  --color-status-info-border: #93C5FD;
+
+  /* Success */
+  --color-status-success-bg:     #F0FDF4;
+  --color-status-success-fg:     #15803D;
+  --color-status-success-border: #86EFAC;
+
+  /* Warning – fg darkened to amber-800 for WCAG AA */
+  --color-status-warning-bg:     #FFFBEB;
+  --color-status-warning-fg:     #92400E;
+  --color-status-warning-border: #FCD34D;
+  /* Ambient icon/dot color (lighter, not used for text) */
+  --color-warning: #B7791F;
+
+  /* Critical */
+  --color-status-critical-bg:     #FEF2F2;
+  --color-status-critical-fg:     #991B1B;
+  --color-status-critical-border: #FCA5A5;
+  /* Ambient icon/dot color */
+  --color-critical: #B42318;
+
+  /* Radius */
+  --radius-card:    12px;
+  --radius-control: 8px;
+  --radius-sm:      4px;
+
+  /* Sidebar widths */
+  --sidebar-width:           240px;
+  --sidebar-width-collapsed: 60px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Base layer
+   Placed inside @layer base so Tailwind utility classes
+   (in @layer utilities) always take precedence.
+
+   ROOT CAUSE OF SIDEBAR CONTRAST BUG:
+   The previous `a { color: inherit }` rule lived OUTSIDE any
+   CSS layer. Un-layered rules outrank @layer utilities in the
+   CSS cascade, so Tailwind's text-color utilities on NavLink
+   <a> elements were silently overridden. NavLink inherited
+   body color (#334155 ink-gray) instead of the sidebar tokens.
+   Moving the rule into @layer base resolves this: utilities
+   layer comes after base layer in Tailwind v4's declared order.
+   ────────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-text);
+    background-color: var(--color-canvas);
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--color-ink);
+    line-height: 1.25;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  /* Anchor reset – inside @layer base so utility classes win */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Focus ring – keyboard accessibility */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
