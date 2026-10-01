@@ -12,12 +12,16 @@ export function RouteErrorPage() {
     isRouteErrorResponse(error) && error.status === 404
 
   const title = isNotFound
-    ? '404 – Trang khong ton tai'
-    : 'Da xay ra loi'
+    ? '404 - Trang không tồn tại'
+    : 'Đã xảy ra lỗi'
 
   const description = isNotFound
-    ? 'Duong dan ban truy cap khong hop le hoac da bi xoa.'
-    : 'Co loi xay ra khi tai trang nay. Vui long thu lai sau.'
+    ? 'Đường dẫn bạn truy cập không hợp lệ hoặc đã bị xóa.'
+    : 'Có lỗi xảy ra khi tải trang này. Vui lòng thử lại sau.'
+
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : ''
+  const firstSegment = pathname.split('/').filter(Boolean)[0]
+  const recoveryPath = firstSegment === 'scm' ? '/scm/dashboard' : '/dealer/dashboard'
 
   return (
     <div className="flex min-h-[50vh] flex-col items-center justify-center gap-6 px-4 text-center">
@@ -33,10 +37,10 @@ export function RouteErrorPage() {
         <p className="mt-2 text-sm text-[var(--color-muted)]">{description}</p>
       </div>
       <Link
-        to="/dealer/dashboard"
+        to={recoveryPath}
         className="inline-flex items-center gap-2 rounded-[var(--radius-control)] bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]"
       >
-        Ve trang chu
+        Về trang chủ
       </Link>
     </div>
   )

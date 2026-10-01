@@ -14,6 +14,9 @@ export function Skeleton({ className }: SkeletonProps) {
   )
 }
 
+/** Alias for Skeleton for backward-compatible naming */
+export const LoadingSkeleton = Skeleton
+
 /** Skeleton layout matching a MetricCard */
 export function MetricCardSkeleton() {
   return (

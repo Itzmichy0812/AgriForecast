@@ -1,5 +1,5 @@
-﻿import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
-import { useState } from 'react'
+﻿import * as React from 'react'
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { StatusVariant } from './StatusBadge'
 
@@ -7,6 +7,7 @@ interface AlertBannerProps {
   variant: StatusVariant
   title: string
   description?: string
+  actions?: React.ReactNode
   dismissible?: boolean
   className?: string
 }
@@ -24,31 +25,31 @@ const variantConfig: Record<StatusVariant, VariantConfig> = {
     containerClass:
       'border-[var(--color-status-neutral-border)] bg-[var(--color-status-neutral-bg)] text-[var(--color-status-neutral-fg)]',
     Icon: Info,
-    srPrefix: 'Thong bao',
+    srPrefix: 'Thông báo',
   },
   info: {
     containerClass:
       'border-[var(--color-status-info-border)] bg-[var(--color-status-info-bg)] text-[var(--color-status-info-fg)]',
     Icon: Info,
-    srPrefix: 'Thong tin',
+    srPrefix: 'Thông tin',
   },
   success: {
     containerClass:
       'border-[var(--color-status-success-border)] bg-[var(--color-status-success-bg)] text-[var(--color-status-success-fg)]',
     Icon: CheckCircle2,
-    srPrefix: 'Thanh cong',
+    srPrefix: 'Thành công',
   },
   warning: {
     containerClass:
       'border-[var(--color-status-warning-border)] bg-[var(--color-status-warning-bg)] text-[var(--color-status-warning-fg)]',
     Icon: AlertTriangle,
-    srPrefix: 'Canh bao',
+    srPrefix: 'Cảnh báo',
   },
   critical: {
     containerClass:
       'border-[var(--color-status-critical-border)] bg-[var(--color-status-critical-bg)] text-[var(--color-status-critical-fg)]',
     Icon: AlertCircle,
-    srPrefix: 'Khan cap',
+    srPrefix: 'Khẩn cấp',
   },
 }
 
@@ -60,10 +61,11 @@ export function AlertBanner({
   variant,
   title,
   description,
+  actions,
   dismissible = false,
   className,
 }: AlertBannerProps) {
-  const [dismissed, setDismissed] = useState(false)
+  const [dismissed, setDismissed] = React.useState(false)
 
   if (dismissed) return null
 
@@ -85,11 +87,12 @@ export function AlertBanner({
         {description && (
           <p className="mt-1 text-sm opacity-90">{description}</p>
         )}
+        {actions && <div className="mt-2.5">{actions}</div>}
       </div>
       {dismissible && (
         <button
           type="button"
-          aria-label="Dong thong bao"
+          aria-label="Đóng thông báo"
           onClick={() => setDismissed(true)}
           className="shrink-0 rounded p-0.5 opacity-70 hover:opacity-100 hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)] transition-opacity"
         >

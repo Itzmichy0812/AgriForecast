@@ -4,6 +4,10 @@ import { RouteErrorPage } from '@/components/shared/RouteErrorPage'
 import { NotFoundPage } from '@/components/shared/NotFoundPage'
 import { PlaceholderPage } from '@/components/shared/PlaceholderPage'
 import { DealerDashboardPage } from '@/features/dealer/dashboard/DealerDashboardPage'
+import { ForecastWorkspacePage } from '@/features/dealer/forecast/ForecastWorkspacePage'
+import { ForecastDetailPage } from '@/features/dealer/forecast/ForecastDetailPage'
+import { InventoryPage } from '@/features/dealer/inventory/InventoryPage'
+import { RequestsWorkspacePage } from '@/features/dealer/requests/RequestsWorkspacePage'
 
 export const router = createBrowserRouter([
   // Root redirect
@@ -12,12 +16,12 @@ export const router = createBrowserRouter([
     element: <Navigate to="/dealer/dashboard" replace />,
   },
 
-  // ── AppShell layout ──────────────────────────────────────────
+  // AppShell layout
   {
     element: <AppShell />,
     errorElement: <RouteErrorPage />,
     children: [
-      // ── Dealer ──────────────────────────────────────────────
+      // Dealer Workspace
       {
         path: '/dealer',
         children: [
@@ -27,30 +31,23 @@ export const router = createBrowserRouter([
           },
           {
             path: 'forecast',
-            element: (
-              <PlaceholderPage
-                title="Du bao nhu cau"
-                description="Man hinh du bao nhu cau theo khu vuc va san pham se duoc xay dung o day."
-              />
-            ),
+            element: <ForecastWorkspacePage />,
+          },
+          {
+            path: 'forecast/:forecastId',
+            element: <ForecastDetailPage />,
           },
           {
             path: 'inventory',
-            element: (
-              <PlaceholderPage
-                title="Ton kho"
-                description="Bang theo doi ton kho va canh bao muc nguong se duoc xay dung o day."
-              />
-            ),
+            element: <InventoryPage />,
           },
           {
             path: 'requests',
-            element: (
-              <PlaceholderPage
-                title="Yeu cau bo sung"
-                description="Danh sach va quan ly yeu cau bo sung hang hoa se duoc xay dung o day."
-              />
-            ),
+            element: <RequestsWorkspacePage />,
+          },
+          {
+            path: 'requests/:requestId',
+            element: <RequestsWorkspacePage />,
           },
           // Dealer catch-all: recover to dealer dashboard
           {
@@ -60,7 +57,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // ── SCM ─────────────────────────────────────────────────
+      // SCM Workspace (Phase 3+)
       {
         path: '/scm',
         children: [
@@ -68,8 +65,8 @@ export const router = createBrowserRouter([
             path: 'dashboard',
             element: (
               <PlaceholderPage
-                title="Toan mang luoi"
-                description="Tong quan toan mang luoi phan phoi se duoc xay dung o day."
+                title="Toàn mạng lưới"
+                description="Tổng quan toàn mạng lưới phân phối sẽ được xây dựng ở đây."
               />
             ),
           },
@@ -77,8 +74,8 @@ export const router = createBrowserRouter([
             path: 'regional-demand',
             element: (
               <PlaceholderPage
-                title="Nhu cau vung"
-                description="Phan tich va tong hop nhu cau theo vung dia ly se duoc xay dung o day."
+                title="Nhu cầu vùng"
+                description="Phân tích và tổng hợp nhu cầu theo vùng địa lý sẽ được xây dựng ở đây."
               />
             ),
           },
@@ -86,8 +83,8 @@ export const router = createBrowserRouter([
             path: 'rebalancing',
             element: (
               <PlaceholderPage
-                title="Dieu chuyen lien vung"
-                description="Cong cu lap ke hoach va phe duyet dieu chuyen hang hoa se duoc xay dung o day."
+                title="Điều chuyển liên vùng"
+                description="Công cụ lập kế hoạch và phê duyệt điều chuyển hàng hóa sẽ được xây dựng ở đây."
               />
             ),
           },
@@ -95,8 +92,8 @@ export const router = createBrowserRouter([
             path: 'central-allocation',
             element: (
               <PlaceholderPage
-                title="Phan bo trung tam"
-                description="Man hinh phan bo tu kho trung tam xuong cac vung se duoc xay dung o day."
+                title="Phân bổ trung tâm"
+                description="Màn hình phân bổ từ kho trung tâm xuống các vùng sẽ được xây dựng ở đây."
               />
             ),
           },
@@ -104,8 +101,8 @@ export const router = createBrowserRouter([
             path: 'procurement',
             element: (
               <PlaceholderPage
-                title="Mua hang"
-                description="Quan ly de xuat va phe duyet ke hoach mua hang se duoc xay dung o day."
+                title="Mua hàng"
+                description="Quản lý đề xuất và phê duyệt kế hoạch mua hàng sẽ được xây dựng ở đây."
               />
             ),
           },
